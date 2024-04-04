@@ -1,23 +1,27 @@
-// Imports
-require('dotenv').config()
-const express = require('express')
-const mongoose = require('mongoose')
-const session = require('express-session')
+// 3rd Party Packages
+const dotenv = require("dotenv");
+const app = require(`./app`);
+const mongoose = require("mongoose");
 
-const app = express()
-const PORT = process.env.PORT || 8000
+// Configuration
+dotenv.config();
+const port = process.env.PORT || 8000;
+const database = process.env.DB_URL;
 
-const DB = process.env.DATABASE
-
+// Database Connect
 mongoose
-  .connect(DB, { 
+  .connect(database, {
     useNewUrlParser: true,
   })
-  .then((con) => {
-    console.log(`Connected to MongoDB at ${DB}`)
-  })
-  .catch((err) => console.error(err))
+  .then(() => console.log("Database connected"))
+  .catch((err) =>
+    console.log({
+      status: "error",
+      message: err.message,
+    })
+  );
 
-app.listen(PORT, () => {
-  console.log(`APP running on port : ${PORT}`)
-})
+// listen Port
+app.listen(port, () => {
+  console.log(`App running on port ${port}...`);
+});
